@@ -14,10 +14,10 @@
 
     <TextView
         android:id="@+id/gameTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="412dp"
+        android:layout_height="71dp"
         android:layout_marginTop="40dp"
-        android:background="#4CAF50"
+        android:background="#7A000000"
         android:fontFamily="@font/mainfont"
         android:gravity="center"
         android:text="Alien Hunter"
@@ -30,8 +30,8 @@
 
     <Button
         android:id="@+id/playButton"
-        android:layout_width="136dp"
-        android:layout_height="76dp"
+        android:layout_width="181dp"
+        android:layout_height="74dp"
         android:layout_marginTop="316dp"
         android:backgroundTint="@color/buttonColor2"
         android:text="Play"
