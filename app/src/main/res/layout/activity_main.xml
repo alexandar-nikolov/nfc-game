@@ -9,6 +9,7 @@
     tools:context=".MainActivity">
     <!-- test -->
 
+
     <!-- Background Image -->
     <ImageView
         android:id="@+id/backgroundImage"
