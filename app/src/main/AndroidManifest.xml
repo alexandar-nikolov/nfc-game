@@ -2,9 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- NFC permission -->
     <uses-permission android:name="android.permission.NFC" />
-    <!-- Declare the app requires NFC hardware -->
     <uses-feature
         android:name="android.hardware.nfc"
         android:required="true" />
