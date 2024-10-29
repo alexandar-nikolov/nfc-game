@@ -17,7 +17,7 @@
         android:layout_width="412dp"
         android:layout_height="71dp"
         android:layout_marginTop="40dp"
-        android:background="#7A000000"
+        android:background="#6E000000"
         android:fontFamily="@font/mainfont"
         android:gravity="center"
         android:text="Alien Hunter"

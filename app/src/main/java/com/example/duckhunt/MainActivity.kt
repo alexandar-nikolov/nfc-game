@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var alienList: MutableList<ImageView>
     private lateinit var rootLayout: ConstraintLayout
     private lateinit var headerLayout: ConstraintLayout
-    private var gameOver = false  // Game over state
+    private var gameOver = false
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,17 +92,17 @@ class MainActivity : AppCompatActivity() {
 
         // Set difficulty based on highscore
         val alienSize = when (highscore) {
-            in 0..4 -> 180  // Large aliens for score 0 to 4
-            in 5..9 -> 150  // Medium size for score 5 to 9
-            in 10..14 -> 120 // Smaller size for score 10 to 14
-            else -> 100      // Smallest aliens for score 15 and above
+            in 0..4 -> 180
+            in 5..9 -> 150
+            in 10..14 -> 120
+            else -> 30
         }
 
         val alienSpeed = when (highscore) {
-            in 0..4 -> 3000L  // Slower movement for lower scores
+            in 0..4 -> 3000L
             in 5..9 -> 2500L
             in 10..14 -> 2000L
-            else -> 1500L     // Fastest movement for higher scores
+            else -> 500L
         }
 
         for (i in 1..5) {
@@ -184,9 +184,9 @@ class MainActivity : AppCompatActivity() {
 
         if (lives <= 0) {
             showGameOverText()
-            gameOver = true  // Set the game over state
+            gameOver = true
             alienList.clear()
-            rootLayout.removeAllViews() // Clear all aliens from the screen
+            rootLayout.removeAllViews()
         } else {
             showReloadText()
         }
@@ -244,7 +244,7 @@ class MainActivity : AppCompatActivity() {
                 reloadText.visibility = View.GONE
                 isReloading = false
 
-                // Respawn aliens after reload
+                //respawn function
                 spawnAliens()
 
                 if (nfcTagIndex >= nfcTags.size) {
