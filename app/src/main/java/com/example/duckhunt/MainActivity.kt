@@ -95,14 +95,14 @@ class MainActivity : AppCompatActivity() {
             in 0..4 -> 180
             in 5..9 -> 150
             in 10..14 -> 120
-            else -> 30
+            else -> 90
         }
 
         val alienSpeed = when (highscore) {
             in 0..4 -> 3000L
             in 5..9 -> 2500L
             in 10..14 -> 2000L
-            else -> 500L
+            else -> 1500L
         }
 
         for (i in 1..5) {
@@ -178,18 +178,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loseLives() {
-        val remainingAliens = alienList.size
-        lives -= remainingAliens
-        Toast.makeText(this, "Lost $remainingAliens lives! Lives left: $lives", Toast.LENGTH_LONG).show()
-
+        lives -= 1
         if (lives <= 0) {
-            showGameOverText()
-            gameOver = true
-            alienList.clear()
-            rootLayout.removeAllViews()
+            lives = 0
+            updateShotsLivesText()
+            endGame()
         } else {
+            Toast.makeText(this, "Lost 1 life! Lives left: $lives", Toast.LENGTH_SHORT).show()
             showReloadText()
         }
+    }
+
+    private fun endGame() {
+        gameOver = true
+        val intent = Intent(this, GameOverActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun resetGame() {
