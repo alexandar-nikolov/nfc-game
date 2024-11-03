@@ -6,7 +6,6 @@ import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.Rect
 import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.os.Bundle
@@ -39,6 +38,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var rootLayout: ConstraintLayout
     private lateinit var headerLayout: ConstraintLayout
     private var gameOver = false
+    private var finalWave = false
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,10 +62,8 @@ class MainActivity : AppCompatActivity() {
         })
 
         rootLayout.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                if (!gameOver) {
-                    handleScreenTap()
-                }
+            if (event.action == MotionEvent.ACTION_DOWN && !gameOver) {
+                handleScreenTap()
             }
             true
         }
@@ -90,18 +88,19 @@ class MainActivity : AppCompatActivity() {
         alienList = mutableListOf()
         val headerHeight = headerLayout.height
 
-        // Set difficulty based on highscore
         val alienSize = when (highscore) {
             in 0..4 -> 180
             in 5..9 -> 150
             in 10..14 -> 120
-            else -> 90
+            in 15..20 -> 110
+            else -> 100
         }
 
         val alienSpeed = when (highscore) {
             in 0..4 -> 3000L
             in 5..9 -> 2500L
             in 10..14 -> 2000L
+            in 15..20 -> 1700L
             else -> 1500L
         }
 
@@ -143,12 +142,10 @@ class MainActivity : AppCompatActivity() {
             highscore += 1
             highscoreText.text = "Highscore: $highscore"
 
-            if (highscore >= 20) {
+            // Show "You Win" only if it's the final wave and all aliens are defeated
+            if (finalWave && alienList.isEmpty()) {
                 showYouWinText()
-                gameOver = true
-            }
-
-            if (alienList.isEmpty()) {
+            } else if (alienList.isEmpty()) {
                 showReloadText()
             }
         }
@@ -200,7 +197,7 @@ class MainActivity : AppCompatActivity() {
         lives = 3
         highscore = 0
         shotsLeft = 5
-        gameOver = false // Reset the game over state
+        gameOver = false
         updateShotsLivesText()
         highscoreText.text = "Highscore: $highscore"
 
@@ -208,10 +205,6 @@ class MainActivity : AppCompatActivity() {
         rootLayout.removeAllViews()
 
         spawnAliens()
-    }
-
-    private fun showGameOverText() {
-        gameOverText.visibility = View.VISIBLE
     }
 
     private fun showYouWinText() {
@@ -248,11 +241,12 @@ class MainActivity : AppCompatActivity() {
                 reloadText.visibility = View.GONE
                 isReloading = false
 
-                //respawn function
-                spawnAliens()
-
+                // If last NFC tag is scanned, start the final wave
                 if (nfcTagIndex >= nfcTags.size) {
-                    reloadText.text = "Congratulations! You scanned all NFC tags!"
+                    finalWave = true
+                    spawnAliens()
+                } else {
+                    spawnAliens()
                 }
             } else {
                 Toast.makeText(this, "Wrong tag! Try again.", Toast.LENGTH_SHORT).show()
